@@ -1,9 +1,9 @@
-interface AsyncEventFn {
+interface AsyncBusFn {
   (args?: object | string | number, resolve?: Function, reject?: Function): Promise<any> | void;
 }
 
-export class AsyncEvent {
-  private __events: { [key: string]: AsyncEventFn[] } = {};
+export class AsyncBus {
+  private __events: { [key: string]: AsyncBusFn[] } = {};
   private timeout?: number;
   constructor(timeout?: number) {
     this.timeout = timeout || 10000;
@@ -11,7 +11,7 @@ export class AsyncEvent {
 
   public emit(event: string, args: any): Promise<any[]> | undefined {
     if (!this.__events[event]) return; // 没有注册该消息返回
-    let eventFns: AsyncEventFn[] = this.__events[event];
+    let eventFns: AsyncBusFn[] = this.__events[event];
     if (eventFns) {
       let ps: Promise<any>[] = [];
       eventFns.forEach(fn => {
@@ -33,7 +33,7 @@ export class AsyncEvent {
     }
   }
 
-  on(event: string, fn: AsyncEventFn) {
+  on(event: string, fn: AsyncBusFn) {
     let eventFns = this.__events[event];
     if (!eventFns) {
       this.__events[event] = [fn];
@@ -42,7 +42,7 @@ export class AsyncEvent {
     }
   }
 
-  remove(event: string, fn: AsyncEventFn) {
+  remove(event: string, fn: AsyncBusFn) {
     let eventFns = this.__events[event];
     if (!eventFns) return;
     let index = eventFns.indexOf(fn);
@@ -60,6 +60,6 @@ export class AsyncEvent {
   }
 }
 
-const asyncEvent = new AsyncEvent();
+const asyncBus = new AsyncBus();
 
-export default asyncEvent;
+export default asyncBus;

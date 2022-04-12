@@ -31,9 +31,9 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "async-event",
+  "name": "async-bus",
   "author": "lucong",
-  "repository": "https://github.com/SilenceTiger/async-event",
+  "repository": "https://github.com/SilenceTiger/async-bus",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
