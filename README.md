@@ -1,103 +1,66 @@
-# TSDX User Guide
+# Three Fly Line
+## 1.安装
+`npm install async-event`
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
+`or`
 
-> This TSDX setup is meant for developing libraries (not apps!) that can be published to NPM. If you’re looking to build a Node app, you could use `ts-node-dev`, plain `ts-node`, or simple `tsc`.
+`yarn add async-event`
+## 2.特性
+在使用传统的 `eventBus` 时，发出时间之后，不知道订阅者合适结束动作。 `async-event` 通过 `emit` 后返回 `Promise` 可以监听订阅返回。
+## 3.使用
 
-> If you’re new to TypeScript, checkout [this handy cheatsheet](https://devhints.io/typescript)
+### 3.1 使用默认导出
+```
+import asyncEvent from 'async-event'
 
-## Commands
+const handleTest1 = (args: any) => {
+    console.log(args);
+};
 
-TSDX scaffolds your new library inside `/src`.
+const handleTest1 = (args: any, resolve: any, reject: any) => {
+  setTimeout(() => {
+    resolve(args);
+  }, 2000);
+};
 
-To run TSDX, use:
+const handleTest2 = (args: any) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve("test2");
+    }, 2000);
+  });
+};
 
-```bash
-npm start # or yarn start
+
+const handleTest3 = () => {
+  return fetch("https://www.baidu.com/").then((res) => {
+    console.log(args)
+    return res;
+  });
+};
+
+asyncEvent.on("test", handleTest);
+asyncEvent.on("test", handleTest1);
+asyncEvent.on("test", handleTest2);
+asyncEvent.on("test", handleTest3);
+
+asyncEvent
+  .emit("test", {
+    msg: "abc",
+  })
+  .then((res) => {
+    console.log(res);
+  });
+
 ```
 
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
-
-To do a one-off build, use `npm run build` or `yarn build`.
-
-To run tests, use `npm test` or `yarn test`.
-
-## Configuration
-
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
-
-### Jest
-
-Jest tests are set up to run with `npm test` or `yarn test`.
-
-### Bundle Analysis
-
-[`size-limit`](https://github.com/ai/size-limit) is set up to calculate the real cost of your library with `npm run size` and visualize the bundle with `npm run analyze`.
-
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
+### 3.2 使用类
+set timout in your async-event
 ```
+import { AsyncEvent } from 'async-event'
 
-### Rollup
+const ae = new AsyncEvent(5000) 
 
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
+export default ae
 
-### TypeScript
-
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
-
-## Continuous Integration
-
-### GitHub Actions
-
-Two actions are added by default:
-
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
-
-## Optimizations
-
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
-
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
-
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
-}
 ```
-
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
-
-## Module Formats
-
-CJS, ESModules, and UMD module formats are supported.
-
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
-
-## Named Exports
-
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
-
-## Including Styles
-
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
-
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
-
-## Publishing to NPM
-
-We recommend using [np](https://github.com/sindresorhus/np).
