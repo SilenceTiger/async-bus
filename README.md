@@ -6,7 +6,7 @@
 
 `yarn add async-bus`
 ## 2.特性
-在使用传统的 `eventBus` 时，发出时间之后，不知道订阅者合适结束动作。 `async-bus` 通过 `emit` 后返回 `Promise` 可以监听订阅返回。
+在使用传统的 `eventBus` 时，发出时间之后，不知道订阅者何时结束动作。 `async-bus` 通过 `emit` 后返回 `Promise` 可以监听订阅返回。
 ## 3.使用
 
 ### 3.1 使用默认导出
