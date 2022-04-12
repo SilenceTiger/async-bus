@@ -11,9 +11,16 @@
 
 ### 3.1 使用默认导出
 ```
+// 监听函数定义
+interface AsyncBusFn {
+  (args?: object | string | number, resolve?: Function, reject?: Function): Promise<any> | void;
+}
+```
+
+```
 import asyncBus from 'async-bus'
 
-const handleTest1 = (args: any) => {
+const handleTest = (args: any) => {
     console.log(args);
 };
 
@@ -49,7 +56,13 @@ asyncBus
     msg: "abc",
   })
   .then((res) => {
+    // 等待四个订阅者执行完毕之后执行
+    // 返回 Promise.all
     console.log(res);
+  })
+  .catch((err) => {
+    // 执行出错 订阅者reject或者超时
+    console.log(err);
   });
 
 ```
