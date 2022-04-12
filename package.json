@@ -33,6 +33,10 @@
   },
   "name": "async-event",
   "author": "lucong",
+  "repository": "https://github.com/SilenceTiger/async-event",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "module": "dist/async-event.esm.js",
   "size-limit": [
     {
