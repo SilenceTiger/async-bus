@@ -51,7 +51,7 @@ export class AsyncBus {
     }
   }
 
-  removeAll(event: string) {
+  removeAll(event?: string) {
     if (event) {
       delete this.__events[event];
     } else {
